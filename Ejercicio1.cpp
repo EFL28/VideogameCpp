@@ -112,31 +112,16 @@ bool heroCheck() {
 	}
 }
 
-bool enemy1Check() {
-	if (enemy1HP <= 0) { //CHECK SI EL ENEMIGO SOBREVIVE O NO
-		cout << "You hit " << heroDamage << " damage points to the enemy " << enemy1Name << ".\n";
-		cout << enemy1Name << " is now dead.\n";
+bool enemyCheck(int enemyhp, string enemyname) {
+	if (enemyhp <= 0) { //CHECK SI EL ENEMIGO SOBREVIVE O NO
+		cout << "You hit " << heroDamage << " damage points to the enemy " << enemyname << ".\n";
+		cout << enemyname << " is now dead.\n";
 		cout << "-----------------------------------------" << endl;
 		return false;
 	}
 	else {
-		cout << "You hit " << heroDamage << " damage points to the enemy " << enemy1Name << ".\n";
-		cout << enemy1Name << " has " << enemy1HP << " health points.\n";
-		cout << "-----------------------------------------" << endl;
-		return true;
-	}
-}
-
-bool enemy2Check() {
-	if (enemy2HP <= 0) {
-		cout << "You hit " << heroDamage << " damage points to the enemy " << enemy2Name << ".\n";
-		cout << enemy2Name << " is now dead.\n";
-		cout << "-----------------------------------------" << endl;
-		return false;
-	}
-	else {
-		cout << "You hit " << heroDamage << " damage points to the enemy " << enemy2Name << ".\n";
-		cout << enemy2Name << " has " << enemy2HP << " health points.\n";
+		cout << "You hit " << heroDamage << " damage points to the enemy " << enemyname << ".\n";
+		cout << enemyname << " has " << enemyhp << " health points.\n";
 		cout << "-----------------------------------------" << endl;
 		return true;
 	}
@@ -148,38 +133,19 @@ int enemyAttack(int damage) {
 
 }
 
-int heroAttack1(int attack) {
+int heroAttack(int attack, int &enemyhp) {
 	switch (attack) { //DEPENDE DEL ATAQUE SUENA DIFERENTES SONIDOS
 	case 1:
 		PlaySound(TEXT("fist.wav"), NULL, SND_FILENAME);
-		return enemy1HP - heroDamage;
+		return enemyhp - heroDamage;
 		break;
 	case 2:
 		PlaySound(TEXT("sword.wav"), NULL, SND_FILENAME);
-		return enemy1HP - heroDamage;
+		return enemyhp - heroDamage;
 		break;
 	case 3:
 		PlaySound(TEXT("Magic.wav"), NULL, SND_FILENAME);
-		return enemy1HP - heroDamage;
-		break;
-	default:
-		break;
-	}
-}
-
-int heroAttack2(int attack) {
-	switch (attack) { //DEPENDE DEL ATAQUE SUENA DIFERENTES SONIDOS
-	case 1:
-		PlaySound(TEXT("fist.wav"), NULL, SND_FILENAME);
-		return enemy2HP - heroDamage;
-		break;
-	case 2:
-		PlaySound(TEXT("sword.wav"), NULL, SND_FILENAME);
-		return enemy2HP - heroDamage;
-		break;
-	case 3:
-		PlaySound(TEXT("Magic.wav"), NULL, SND_FILENAME);
-		return enemy2HP - heroDamage;
+		return enemyhp - heroDamage;
 		break;
 	default:
 		break;
@@ -217,8 +183,8 @@ int main() {
 					}
 					calcAttack(attackOption);
 				}
-				enemy1HP = heroAttack1(attackOption);
-				enemy1Alive = enemy1Check();
+				enemy1HP = heroAttack(attackOption, enemy1HP);
+				enemy1Alive = enemyCheck(enemy1HP, enemy1Name);
 
 			}
 			else { //SI EL ENEMIGO1 ESTA MUERTO Y LE ATACAMOS FALLAMOS EL ATAQUE
@@ -237,8 +203,8 @@ int main() {
 					}
 					calcAttack(attackOption);
 				}
-				enemy2HP = heroAttack2(attackOption);
-				enemy2Alive = enemy1Check();
+				enemy2HP = heroAttack(attackOption, enemy2HP);
+				enemy2Alive = enemyCheck(enemy2HP, enemy2Name);
 			}
 			else { //SI EL ENEMIGO2 ESTA MUERTO Y LE ATACAMOS FALLAMOS EL ATAQUE
 				cout << "You miss the attack to " << enemy2Name << " because it's already dead." << endl;

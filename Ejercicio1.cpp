@@ -116,6 +116,7 @@ void enemyCheck(int &enemyhp, string enemyname, bool &enemyAlive) {
 		cout << enemyname << " is now dead.\n";
 		cout << "-----------------------------------------" << endl;
 		enemyAlive = false;
+		enemyhp = 0;
 	}
 	else {
 		cout << "You hit " << heroDamage << " damage points to the enemy " << enemyname << ".\n";

@@ -23,9 +23,7 @@ int heroDamage;
 int heroHP = 700;
 bool heroAlive = true;
 
-int attack1 = rand();
-int attack2 = rand();
-int attack3 = rand();
+int attack = rand();
 int limitedAttack = 0;
 
 void gameStart() {
@@ -82,16 +80,16 @@ void calcAttack(int option) {
 
 	switch (option) { //EN BASE AL ATAQUE ELEGIDO SE CALCULA CUANTO HACE DE DAÑO
 	case 1:
-		attack1 = rand() % 30 + 0;
-		heroDamage = attack1;
+		attack = rand() % 30 + 0;
+		heroDamage = attack;
 		break;
 	case 2:
-		attack2 = rand() % (50 - 30 + 1) + 30;
-		heroDamage = attack2;
+		attack = rand() % (50 - 30 + 1) + 30;
+		heroDamage = attack;
 		break;
 	case 3:
-		attack3 = rand() % (100 - 50 + 1) + 50;
-		heroDamage = attack3;
+		attack = rand() % (100 - 50 + 1) + 50;
+		heroDamage = attack;
 		limitedAttack++; // CONTADOR DE USO DEL ATAQUE
 		break;
 	default:
@@ -112,18 +110,18 @@ bool heroCheck() {
 	}
 }
 
-bool enemyCheck(int enemyhp, string enemyname) {
+void enemyCheck(int &enemyhp, string enemyname, bool &enemyAlive) {
 	if (enemyhp <= 0) { //CHECK SI EL ENEMIGO SOBREVIVE O NO
 		cout << "You hit " << heroDamage << " damage points to the enemy " << enemyname << ".\n";
 		cout << enemyname << " is now dead.\n";
 		cout << "-----------------------------------------" << endl;
-		return false;
+		enemyAlive = false;
 	}
 	else {
 		cout << "You hit " << heroDamage << " damage points to the enemy " << enemyname << ".\n";
 		cout << enemyname << " has " << enemyhp << " health points.\n";
 		cout << "-----------------------------------------" << endl;
-		return true;
+		enemyAlive = true;
 	}
 }
 
@@ -173,6 +171,7 @@ int main() {
 		calcAttack(attackOption);
 
 		if (enemySelection(enemyOption) == 1) {
+			//enemy1Alive = enemyCheck(enemy1HP, enemy1Name);
 			if (enemy1Alive) { //CHECK ENEMIGO1 VIVO
 				if (attackOption == 3 && limitedAttack >= 4) { //SI ESCOGEMOS ATAQUE 3 PERO YA HA SIDO ESCOGIDO 4 VECES ANTES NO SE UTILIZA
 					while (attackOption >= 3 || attackOption < 1) {
@@ -184,7 +183,7 @@ int main() {
 					calcAttack(attackOption);
 				}
 				enemy1HP = heroAttack(attackOption, enemy1HP);
-				enemy1Alive = enemyCheck(enemy1HP, enemy1Name);
+				enemyCheck(enemy1HP, enemy1Name, enemy1Alive);
 
 			}
 			else { //SI EL ENEMIGO1 ESTA MUERTO Y LE ATACAMOS FALLAMOS EL ATAQUE
@@ -204,7 +203,7 @@ int main() {
 					calcAttack(attackOption);
 				}
 				enemy2HP = heroAttack(attackOption, enemy2HP);
-				enemy2Alive = enemyCheck(enemy2HP, enemy2Name);
+				enemyCheck(enemy2HP, enemy2Name, enemy2Alive);
 			}
 			else { //SI EL ENEMIGO2 ESTA MUERTO Y LE ATACAMOS FALLAMOS EL ATAQUE
 				cout << "You miss the attack to " << enemy2Name << " because it's already dead." << endl;
